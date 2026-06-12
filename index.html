@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal AgroBrasil - O Canal da Nossa Economia</title>
+    <style>
+        /* ==========================================================================
+           VARIÁVEIS DE CORES E CONFIGURAÇÕES (Suporta Modo Claro e Escuro)
+           ========================================================================== */
+        :root {
+            --bg-principal: #f4f7f5;
+            --bg-card: #ffffff;
+            --texto-principal: #2c3e50;
+            --texto-secundario: #607d8b;
+            --cor-marca: #285430;        /* Verde Agro Profundo */
+            --cor-marca-suave: #5f8d4e;  /* Verde Folha */
+            --cor-marca-hover: #183d23;
+            --detalhe-laranja: #f26522;  /* Alusão ao Canal Rural */
+            --borda: #e0e0e0;
+            --transicao: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --bg-tabela-hover: #f1f8f3;
+        }
+
+        [data-theme="dark"] {
+            --bg-principal: #121212;
+            --bg-card: #1e1e1e;
+            --texto-principal: #f8f9fa;
+            --texto-secundario: #b0bec5;
+            --cor-marca: #4db6ac;
+            --cor-marca-suave: #26a69a;
+            --cor-marca-hover: #00796b;
+            --borda: #2d2d2d;
+            --bg-tabela-hover: #252a26;
+        }
+
+        /* ==========================================================================
+           RESET E PADRÕES
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: var(--transicao);
+        }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--texto-principal);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* ==========================================================================
+           1. BARRA DE ACESSIBILIDADE
+           ========================================================================== */
+        .barra-acessibilidade {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 8px 5%;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            font-size: 0.85rem;
+        }
+
+        .btn-acessibilidade {
+            background: none;
+            border: none;
+            color: #ccc;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-acessibilidade:hover {
+            color: var(--detalhe-laranja);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           2. HEADER PRINCIPAL (STICKY)
+           ========================================================================== */
+        header {
+            background-color: var(--bg-card);
+            border-bottom: 4px solid var(--detalhe-laranja);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--cor-marca);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--detalhe-laranja);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--texto-principal);
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        nav ul li a:hover, nav ul li a.active {
+            color: #fff;
+            background-color: var(--cor-marca-suave);
+        }
+
+        /* ==========================================================================
+           3. TICKER DE COTAÇÕES (MARQUEE INTERATIVO)
+           ========================================================================== */
+        .ticker-cotacoes {
+            background-color: var(--cor-marca);
+            color: white;
+            padding: 12px 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .ticker-wrapper {
+            display: inline-block;
+            animation: moverTicker 30s linear infinite;
+        }
+
+        .ticker-item {
+            display: inline-block;
+            padding: 0 40px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            border-right: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .ticker-item span.alta { color: #81c784; }
+        .ticker-item span.baixa { color: #e57373; }
+
+        @keyframes moverTicker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+
+        /* ==========================================================================
+           4. HERO SECTION (BANNER INTEGRADO)
+           ========================================================================== */
+        .hero-portal {
+            background: linear-gradient(rgba(40, 84, 48, 0.8), rgba(24, 61, 35, 0.85)), 
+                        url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
+            color: #fff;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .hero-portal h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+            border: none;
+            padding: 0;
+        }
+
+        .hero-portal p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+
+        /* ==========================================================================
+           5. GRID PRINCIPAL (LAYOUT PORTAL)
+           ========================================================================== */
+        .conteudo-principal {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 2.2fr 1fr;
+            gap: 30px;
+        }
+
+        /* Seções de Blocos do Portal */
+        section {
+            background: var(--bg-card);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--cor-marca-suave);
+        }
+
+        h2.section-title {
+            color: var(--cor-marca);
+            border-bottom: 2px solid var(--borda);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 {
+            color: var(--cor-marca-suave);
+            margin: 15px 0 10px 0;
+        }
+
+        /* Listas Estilizadas */
+        .cadeia-lista {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .cadeia-lista li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .cadeia-lista li::before {
+            content: "🌱";
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
+        /* Tabelas Responsivas */
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 15px;
+            border-radius: 6px;
+            border: 1px solid var(--borda);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 14px 18px;
+            text-align: left;
+            border-bottom: 1px solid var(--borda);
+        }
+
+        th {
+            background-color: var(--cor-marca);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: var(--bg-tabela-hover);
+        }
+
+        /* Cards em Grid */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: var(--bg-principal);
+            border-left: 4px solid var(--detalhe-laranja);
+            padding: 20px;
+            border-radius: 6px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+
+        /* ==========================================================================
+           6. SIDEBAR WIDGETS
+           ========================================================================== */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .widget {
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--detalhe-laranja);
+        }
+
+        .widget h3 {
+            color: var(--texto-principal);
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.25rem;
+            border-bottom: 2px solid var(--borda);
+            padding-bottom: 8px;
+        }
+
+        .lista-rapida li {
+            list-style: none;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--borda);
+        }
+        
+        .lista-rapida li a {
+            text-decoration: none;
+            color: var(--texto-principal);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .lista-rapida li a:hover {
+            color: var(--detalhe-laranja);
+        }
+
+        /* ==========================================================================
+           7. SEÇÃO DE MANCHETES & NOTÍCIAS (BAIXO)
+           ========================================================================== */
+        .sub-grid-noticias {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 10px;
+        }
+
+        .card-noticia {
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .img-container {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            background-color: #ddd;
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .categoria-tag {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background-color: var(--detalhe-laranja);
+            color: white;
+            padding: 4px 10px;
+            font-weight: bold;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            border-radius: 3px;
+        }
+
+        .card-noticia .corpo-noticia {
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .card-noticia h4 {
+            font-size: 1.15rem;
+            margin-bottom: 10px;
+            color: var(--texto-principal);
+        }
+
+        /* ==========================================================================
+           8. RODAPÉ
+           ========================================================================== */
+        footer {
+            background-color: #1a1a1a;
+            color: #b0bec5;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 60px;
+            font-size: 0.9rem;
+            border-top: 4px solid var(--cor-marca);
+        }
+
+        footer strong {
+            color: #fff;
+        }
+
+        /* ==========================================================================
+           9. RESPONSIVIDADE
+           ========================================================================== */
+        @media (max-width: 992px) {
+            .conteudo-principal {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .hero-portal h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Foco de Acessibilidade */
+        button:focus, a:focus {
+            outline: 3px solid var(--detalhe-laranja);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="barra-acessibilidade" role="complementary" aria-label="Controles de Acessibilidade">
+        <button class="btn-acessibilidade" onclick="alterarFonte(1)" aria-label="Aumentar texto">A+</button>
+        <button class="btn-acessibilidade" onclick="alterarFonte(-1)" aria-label="Diminuir texto">A-</button>
+        <button class="btn-acessibilidade" id="btn-tema" onclick="alternarTema()" aria-label="Alternar modo escuro e claro">Alternar Tema (Claro/Escuro)</button>
+    </div>
+
+    <header role="banner">
+        <div class="header-container">
+            <a href="#" class="logo">Portal<span>AgroBrasil</span></a>
+            <nav role="navigation" aria-label="Menu principal">
+                <ul>
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#cadeia">Cadeia Produtiva</a></li>
+                    <li><a href="#indicadores">Indicadores</a></li>
+                    <li><a href="#regioes">Regiões</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="ticker-cotacoes" aria-label="Cotações Agro em Tempo Real">
+        <div class="ticker-wrapper" id="ticker-dados">
+            <div class="ticker-item">SOJA (SGO/MT): R$ 138,50 <span class="alta">▲ +0.45%</span></div>
+            <div class="ticker-item">MILHO (Campinas/SP): R$ 62,10 <span class="baixa">▼ -1.20%</span></div>
+            <div class="ticker-item">BOI GORDO (SP): R$ 235,00 <span class="alta">▲ +0.15%</span></div>
+            <div class="ticker-item">DÓLAR: R$ 5,12 <span class="baixa">▼ -0.32%</span></div>
+            <div class="ticker-item">CAFÉ ARÁBICA: R$ 1.120,00 <span class="alta">▲ +0.85%</span></div>
+        </div>
+    </div>
+
+    <div class="hero-portal">
+        <h2>O Motor da Nossa Economia</h2>
+        <p>Da semente que cai na terra ao prato de bilhões de pessoas ao redor do mundo. Conheça a força, a tecnologia e os novos rumos do campo brasileiro.</p>
+    </div>
+
+    <main class="conteudo-principal">
+        
+        <div class="fluxo-conteudo">
+            
+            <section id="cadeia">
+                <h2 class="section-title">🌐 O que é o Agronegócio?</h2>
+                <p>Muitos acham que o "agro" é apenas plantar e colher, mas ele vai muito além disso. O setor engloba toda uma cadeia produtiva dividida em três momentos cruciais:</p>
+                <ul class="cadeia-lista">
+                    <li><strong>Antes da porteira:</strong> Fabricação de fertilizantes, sementes, rações, máquinas agrícolas e desenvolvimento avançado de biotecnologia.</li>
+                    <li><strong>Dentro da porteira:</strong> O cultivo de grãos, frutas, fibras e a criação de animais (pecuária) diretamente nas propriedades rurais.</li>
+                    <li><strong>Depois da porteira:</strong> A agroindústria que transforma a matéria-prima (como o leite em queijo), além dos setores de transporte, logística internacional e as vendas finais.</li>
+                </ul>
+            </section>
+
+            <section id="indicadores">
+                <h2 class="section-title">📊 O Peso do Agro no Brasil</h2>
+                <p>O Brasil consolidou-se como o "celeiro do mundo". Veja abaixo os principais dados estatísticos que provam o impacto direto do setor na nossa riqueza nacional:</p>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Indicador Econômico</th>
+                                <th>Impacto Real no País</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Participação no PIB</strong></td>
+                                <td>Representa cerca de 23% de toda a riqueza gerada em território nacional.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Exportações Globais</strong></td>
+                                <td>Responde por quase 50% de tudo o que o Brasil vende para o exterior.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Alimentação Global</strong></td>
+                                <td>O campo produz hoje o suficiente para alimentar mais de 1 bilhão de pessoas pelo planeta.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Geração de Empregos</strong></td>
+                                <td>Movimenta cerca de 19 milhões de postos de trabalho diretos e indiretos.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="campeoes">
+                <h2 class="section-title">🏆 Os Campeões de Produção</h2>
+                <p>O solo fértil aliado à tecnologia de ponta faz do Brasil líder de rankings globais:</p>
+                <div class="grid-cards">
+                    <div class="card">
+                        <h3>🌾 Soja</h3>
+                        <p>Maior produtor mundial. É a base estrutural para ração animal e óleo de cozinha no comércio externo.</p>
+                    </div>
+                    <div class="card">
+                        <h3>🥩 Carnes</h3>
+                        <p>Líder no comércio internacional de proteína animal (bovina e frango), atendendo mais de 150 países.</p>
+                    </div>
+                    <div class="card">
+                        <h3>🌱 Cana</h3>
+                        <p>Base limpa para açúcar e etanol. O país domina cerca de 40% de todo o segmento no mundo.</p>
+                    </div>
+                    <div class="card">
+                        <h3>☕ Café & Laranja</h3>
+                        <p>Tradição e liderança histórica. Um em cada três cafés tomados no planeta vem de grãos brasileiros.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="regioes">
+                <h2 class="section-title">🗺️ O Agro por Regiões</h2>
+                <p>Cada parte do mapa brasileiro possui uma especialidade ligada às suas características geográficas e climáticas:</p>
+                <ul class="cadeia-lista">
+                    <li><strong>Centro-Oeste:</strong> O gigante dos grãos. Lidera com folga a produção de soja e milho, além de possuir gigantescos rebanhos.</li>
+                    <li><strong>Sul:</strong> Referência tecnológica na criação intensiva de aves, suínos e uma forte bacia leiteira cooperativa.</li>
+                    <li><strong>Sudeste:</strong> Concentra os maiores parques industriais de processamento, além de lavouras robustas de café e cana-de-açúcar.</li>
+                    <li><strong>Nordeste:</strong> Destaque na fruticultura irrigada de alta qualidade (Vale do São Francisco) e pólos tradicionais de cana.</li>
+                    <li><strong>Norte:</strong> Fronteira em expansão sustentável com foco em itens nativos (açaí, castanha) e grãos estruturados.</li>
+                </ul>
+            </section>
+
+        </div>
+
+        <aside class="sidebar">
+            
+            <div class="widget" aria-label="Previsão do Tempo Agrícola">
+                <h3>Previsão do Tempo</h3>
+                <p><strong>Região Sul:</strong> Frente fria traz chuvas pontuais ideais para o manejo preventivo do solo.</p>
+                <p style="margin-top:12px;"><strong>Centro-Oeste:</strong> Clima firme e sol constante favorecem o ritmo acelerado das colheitadeiras.</p>
+            </div>
+
+            <div class="widget">
+                <h3>🚀 Agricultura 4.0 & Futuro</h3>
+                <p>O campo hoje roda conectado. O uso integrado de <strong>drones, sensores, tratores autônomos guiados por GPS e inteligência artificial</strong> dita as regras da produtividade.</p>
+                <p style="margin-top:10px; font-weight: 500;">Principais Desafios Atuais:</p>
+                <ul style="padding-left:15px; margin-top:8px; font-size:0.9rem;">
+                    <li style="margin-bottom:6px;"><strong>Sustentabilidade:</strong> Produzir mais em áreas já abertas, zerando pegadas de carbono.</li>
+                    <li style="margin-bottom:6px;"><strong>Logística:</strong> Escoar com eficiência por ferrovias e portos modernos.</li>
+                    <li><strong>Inclusão:</strong> Levar a tecnologia de ponta para a agricultura familiar.</li>
+                </ul>
+            </div>
+
+            <div class="widget">
+                <h3>Mais Lidas do Setor</h3>
+                <ul class="lista-rapida">
+                    <li><a href="#">Mercado de bioinsumos projeta crescimento recorde para o próximo trimestre.</a></li>
+                    <li><a href="#">Uso de IA inteligente reduz em até 40% desperdício de água na irrigação.</a></li>
+                    <li><a href="#">Plano Safra traz incentivos fiscais inéditos para transição ecológica campo fora.</a></li>
+                </ul>
+            </div>
+
+        </aside>
+
+        <div class="sub-grid-noticias">
+            
+            <div class="card-noticia">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?q=80&w=600" alt="Máquinas no campo">
+                    <span class="categoria-tag">Tecnologia</span>
+                </div>
+                <div class="corpo-noticia">
+                    <h4>Mapeamento Via Satélite Eleva Precisão</h4>
+                    <p style="color: var(--texto-secundario); font-size: 0.9rem;">Novas ferramentas monitoram pragas em tempo real e evitam desperdício de insumos.</p>
+                </div>
+            </div>
+
+            <div class="card-noticia">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1516253593875-bd7ba052fbc5?q=80&w=600" alt="Gado no pasto">
+                    <span class="categoria-tag">Pecuária</span>
+                </div>
+                <div class="corpo-noticia">
+                    <h4>Pastejo Rotacionado e Sequestro de Carbono</h4>
+                    <p style="color: var(--texto-secundario); font-size: 0.9rem;">Estudos nacionais provam o papel das pastagens bem manejadas na conservação ambiental.</p>
+                </div>
+            </div>
+
+            <div class="card-noticia">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1589923188900-85dae523342b?q=80&w=600" alt="Trator tecnológico">
+                    <span class="categoria-tag">Maquinário</span>
+                </div>
+                <div class="corpo-noticia">
+                    <h4>Tratores 100% Elétricos Ganham Espaço</h4>
+                    <p style="color: var(--texto-secundario); font-size: 0.9rem;">Modelos sustentáveis começam a atender pequenos produtores com custo zero de combustível.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 <strong>Portal AgroBrasil</strong>. Todos os direitos reservados. Desenvolvido focando na inovação, acessibilidade e na força do campo brasileiro.</p>
+    </footer>
+
+    <script>
+        // 1. ALTERNAR TEMA (Modo Claro/Escuro)
+        function alternarTema() {
+            const html = document.documentElement;
+            const temaAtual = html.getAttribute('data-theme');
+            if (temaAtual === 'dark') {
+                html.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Carregar tema salvo no navegador do usuário
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+
+        // 2. CONTROLE DE TAMANHO DE FONTE
+        let tamanhoFonteAtual = 16;
+        function alterarFonte(direcao) {
+            tamanhoFonteAtual += direcao * 2;
+            // Limites seguros de redimensionamento
+            if (tamanhoFonteAtual >= 12 && tamanhoFonteAtual <= 24) {
+                document.body.style.fontSize = tamanhoFonteAtual + 'px';
+            }
+        }
+
+        // 3. CLONAGEM DO TICKER PARA ANIMAÇÃO INFINITA SEM QUEBRAS
+        const tickerWrapper = document.getElementById('ticker-dados');
+        tickerWrapper.innerHTML += tickerWrapper.innerHTML;
+    </script>
+</body>
+</html>
